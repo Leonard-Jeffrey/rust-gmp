@@ -1,7 +1,36 @@
 use libc::{c_char, c_int, c_long, c_ulong, c_void, c_double, size_t};
+// pub type c_char = i8;
+// pub typoe c_int = i32;
+// pub type c_long = i64;
+// pub type c_ulong = u64;
+// pub type c_double = f64;
+// pub type size_t = usize;
+
+// c_void: Equivalent to C’s void type when used as a pointer.
+/*
+    #[repr(u8)]
+    pub enum c_void {
+        // some variants omitted
+    }
+*/
+
 use super::rand::gmp_randstate_t;
+// type gmp_randstate_t = *mut gmp_randstate_struct;
+// #[repr(C)]
+// pub struct gmp_randstate_struct { /* fields omitted */ }
+
 use super::sign::Sign;
+/*
+pub enum Sign {
+    Negative,
+    Zero,
+    Positive,
+}
+*/
+
 use std::convert::From;
+// From trait
+
 use std::mem::{uninitialized,size_of};
 use std::{fmt, hash};
 use std::cmp::Ordering::{self, Greater, Less, Equal};
@@ -25,15 +54,15 @@ use ffi::*;
 
 #[repr(C)]
 pub struct mpz_struct {
-    _mp_alloc: c_int,
-    _mp_size: c_int,
-    _mp_d: *mut c_void
+    _mp_alloc: c_int, // i32
+    _mp_size: c_int, // i32
+    _mp_d: *mut c_void // void
 }
 
 pub type mp_limb_t = usize; // TODO: Find a way to use __gmp_bits_per_limb instead.
-pub type mp_bitcnt_t = c_ulong;
-pub type mpz_srcptr = *const mpz_struct;
-pub type mpz_ptr = *mut mpz_struct;
+pub type mp_bitcnt_t = c_ulong; // u64
+pub type mpz_srcptr = *const mpz_struct; // const
+pub type mpz_ptr = *mut mpz_struct; // mut
 
 #[link(name = "gmp")]
 extern "C" {
